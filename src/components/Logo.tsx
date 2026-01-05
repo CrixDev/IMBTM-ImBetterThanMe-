@@ -1,3 +1,6 @@
+import IsotipoIMBTM from '@/assets/Isotipo_IMBTM.svg'
+import LogoIMBTM from '@/assets/Logo_IMBTM.svg'
+
 interface LogoProps {
   className?: string
   variant?: 'isotipo' | 'full'
@@ -7,7 +10,7 @@ export function Logo({ className = '', variant = 'isotipo' }: LogoProps) {
   if (variant === 'isotipo') {
     return (
       <img 
-        src="/src/assets/Isotipo_IMBTM.svg" 
+        src={IsotipoIMBTM} 
         alt="IMBTM" 
         className={className}
       />
@@ -16,7 +19,7 @@ export function Logo({ className = '', variant = 'isotipo' }: LogoProps) {
 
   return (
     <img 
-      src="/src/assets/Logo_IMBTM.svg" 
+      src={LogoIMBTM} 
       alt="ImBetterThanMe" 
       className={className}
     />
