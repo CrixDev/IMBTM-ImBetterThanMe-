@@ -67,10 +67,10 @@ export const useAddictionStore = create<AddictionState>((set, get) => ({
   createAddiction: async (addiction) => {
     const { data, error } = await supabase
       .from('addictions')
-      .insert({
+      .insert([{
         ...addiction,
         max_streak_days: 0
-      })
+      }])
       .select()
       .single()
     
@@ -124,11 +124,11 @@ export const useAddictionStore = create<AddictionState>((set, get) => ({
     const newMaxStreak = Math.max(currentStreak, addiction.max_streak_days)
 
     // Insert relapse record
-    await supabase.from('relapses').insert({
+    await supabase.from('relapses').insert([{
       addiction_id: addictionId,
       relapse_date: now,
       notes: notes || null
-    })
+    }])
 
     // Update addiction with new relapse date and max streak
     await supabase
@@ -169,12 +169,12 @@ export const useAddictionStore = create<AddictionState>((set, get) => ({
         if (!alreadyUnlocked) {
           const { data, error } = await supabase
             .from('achievements')
-            .insert({
+            .insert([{
               user_id: userId,
               addiction_id: addictionId,
               achievement_type: achievementDef.type as AchievementType,
               streak_days: currentStreak
-            })
+            }])
             .select()
             .single()
 
