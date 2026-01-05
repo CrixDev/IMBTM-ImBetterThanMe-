@@ -1,0 +1,451 @@
+openapi: 3.0.3
+info:
+  title: ImBetterThanMe API
+  description: |
+    API para la aplicación IMBTM de control de adicciones y hábitos.
+    Esta API utiliza Supabase como backend y requiere autenticación JWT.
+  version: 1.0.0
+  contact:
+    name: IMBTM Support
+  license:
+    name: MIT
+
+servers:
+  - url: https://wrlszwifzliaozkdfggu.supabase.co/rest/v1
+    description: Supabase REST API (reemplaza YOUR_PROJECT_REF con tu proyecto)
+
+security:
+  - bearerAuth: []
+  - apiKey: []
+
+tags:
+  - name: Addictions
+    description: Gestión de adicciones/hábitos
+  - name: Relapses
+    description: Registro de recaídas
+  - name: Achievements
+    description: Sistema de logros
+
+paths:
+  /addictions:
+    get:
+      tags:
+        - Addictions
+      summary: Obtener todas las adicciones del usuario
+      description: Retorna todas las adicciones activas del usuario autenticado
+      parameters:
+        - name: is_active
+          in: query
+          schema:
+            type: boolean
+            default: true
+          description: Filtrar por estado activo
+        - name: order
+          in: query
+          schema:
+            type: string
+            default: created_at.desc
+          description: Ordenar resultados
+      responses:
+        '200':
+          description: Lista de adicciones
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Addiction'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+    post:
+      tags:
+        - Addictions
+      summary: Crear una nueva adicción
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddictionCreate'
+      responses:
+        '201':
+          description: Adicción creada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Addiction'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+
+  /addictions?id=eq.{id}:
+    patch:
+      tags:
+        - Addictions
+      summary: Actualizar una adicción
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddictionUpdate'
+      responses:
+        '200':
+          description: Adicción actualizada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Addiction'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+    delete:
+      tags:
+        - Addictions
+      summary: Eliminar una adicción (soft delete)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Adicción eliminada
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /relapses:
+    get:
+      tags:
+        - Relapses
+      summary: Obtener recaídas
+      parameters:
+        - name: addiction_id
+          in: query
+          schema:
+            type: string
+            format: uuid
+          description: Filtrar por adicción
+        - name: order
+          in: query
+          schema:
+            type: string
+            default: relapse_date.desc
+      responses:
+        '200':
+          description: Lista de recaídas
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Relapse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+    post:
+      tags:
+        - Relapses
+      summary: Registrar una recaída
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RelapseCreate'
+      responses:
+        '201':
+          description: Recaída registrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Relapse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+
+  /achievements:
+    get:
+      tags:
+        - Achievements
+      summary: Obtener logros del usuario
+      parameters:
+        - name: addiction_id
+          in: query
+          schema:
+            type: string
+            format: uuid
+          description: Filtrar por adicción
+        - name: order
+          in: query
+          schema:
+            type: string
+            default: unlocked_at.desc
+      responses:
+        '200':
+          description: Lista de logros
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Achievement'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+    post:
+      tags:
+        - Achievements
+      summary: Desbloquear un logro
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AchievementCreate'
+      responses:
+        '201':
+          description: Logro desbloqueado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Achievement'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '409':
+          description: Logro ya desbloqueado
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Token JWT de Supabase Auth
+    apiKey:
+      type: apiKey
+      in: header
+      name: apikey
+      description: Clave anónima de Supabase
+
+  schemas:
+    Addiction:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: ID único de la adicción
+        user_id:
+          type: string
+          format: uuid
+          description: ID del usuario propietario
+        name:
+          type: string
+          description: Nombre de la adicción
+          example: "Dejar de fumar"
+        icon:
+          type: string
+          description: Emoji del icono
+          example: "🚬"
+        start_date:
+          type: string
+          format: date-time
+          description: Fecha de inicio del seguimiento
+        last_relapse:
+          type: string
+          format: date-time
+          nullable: true
+          description: Fecha de la última recaída
+        is_active:
+          type: boolean
+          description: Si la adicción está activa
+        max_streak_days:
+          type: integer
+          description: Racha máxima alcanzada en días
+        created_at:
+          type: string
+          format: date-time
+          description: Fecha de creación
+
+    AddictionCreate:
+      type: object
+      required:
+        - user_id
+        - name
+        - start_date
+      properties:
+        user_id:
+          type: string
+          format: uuid
+        name:
+          type: string
+          minLength: 1
+          maxLength: 100
+        icon:
+          type: string
+          default: "🎯"
+        start_date:
+          type: string
+          format: date-time
+
+    AddictionUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+        icon:
+          type: string
+        last_relapse:
+          type: string
+          format: date-time
+        is_active:
+          type: boolean
+        max_streak_days:
+          type: integer
+
+    Relapse:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        addiction_id:
+          type: string
+          format: uuid
+        relapse_date:
+          type: string
+          format: date-time
+        notes:
+          type: string
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+
+    RelapseCreate:
+      type: object
+      required:
+        - addiction_id
+        - relapse_date
+      properties:
+        addiction_id:
+          type: string
+          format: uuid
+        relapse_date:
+          type: string
+          format: date-time
+        notes:
+          type: string
+          maxLength: 500
+
+    Achievement:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        user_id:
+          type: string
+          format: uuid
+        addiction_id:
+          type: string
+          format: uuid
+        achievement_type:
+          type: string
+          enum:
+            - first_week
+            - one_month
+            - quarter
+            - half_year
+            - legend
+          description: |
+            Tipos de logros:
+            - first_week: 7 días
+            - one_month: 30 días
+            - quarter: 90 días
+            - half_year: 180 días
+            - legend: 365 días
+        streak_days:
+          type: integer
+          description: Días de racha cuando se desbloqueó
+        unlocked_at:
+          type: string
+          format: date-time
+
+    AchievementCreate:
+      type: object
+      required:
+        - user_id
+        - addiction_id
+        - achievement_type
+        - streak_days
+      properties:
+        user_id:
+          type: string
+          format: uuid
+        addiction_id:
+          type: string
+          format: uuid
+        achievement_type:
+          type: string
+          enum:
+            - first_week
+            - one_month
+            - quarter
+            - half_year
+            - legend
+        streak_days:
+          type: integer
+          minimum: 0
+
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+        code:
+          type: string
+        details:
+          type: string
+
+  responses:
+    Unauthorized:
+      description: No autorizado - Token inválido o expirado
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+    BadRequest:
+      description: Solicitud inválida
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+    NotFound:
+      description: Recurso no encontrado
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
