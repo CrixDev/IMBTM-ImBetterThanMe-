@@ -17,37 +17,35 @@ export default function Achievements() {
     }
   }, [user, fetchAchievements, fetchAddictions])
 
-  // Group achievements by addiction
   const achievementsByAddiction = addictions.map((addiction) => ({
     addiction,
     achievements: achievements.filter((a) => a.addiction_id === addiction.id),
     possibleAchievements: ACHIEVEMENTS
   }))
 
-  // Calculate total progress
   const totalPossible = addictions.length * ACHIEVEMENTS.length
   const totalUnlocked = achievements.length
   const progressPercent = totalPossible > 0 ? (totalUnlocked / totalPossible) * 100 : 0
 
   return (
-    <div className="space-y-6 pb-4">
+    <div className="space-y-8 pb-8">
       {/* Header */}
       <div className="animate-fade-in">
-        <h1 className="text-2xl font-bold text-slate-100">Mis Logros</h1>
-        <p className="text-slate-400 mt-1">Tu colección de victorias</p>
+        <h1 className="text-3xl font-bold text-white mb-2">Mis Logros</h1>
+        <p className="text-zinc-400">Tu colección de victorias</p>
       </div>
 
       {/* Overall Progress */}
-      <div className="bg-slate-800/50 backdrop-blur rounded-2xl p-5 border border-slate-700/50 animate-fade-in delay-100">
+      <div className="bg-zinc-900 rounded-xl p-6 border border-zinc-800 animate-fade-in delay-100">
         <div className="flex items-center justify-between mb-3">
-          <span className="text-sm font-medium text-slate-300">Progreso Total</span>
-          <span className="text-sm text-slate-400">
+          <span className="text-sm font-medium text-zinc-300">Progreso Total</span>
+          <span className="text-sm text-zinc-400">
             {totalUnlocked} / {totalPossible} logros
           </span>
         </div>
-        <div className="h-3 bg-slate-700 rounded-full overflow-hidden">
+        <div className="h-3 bg-zinc-800 rounded-full overflow-hidden">
           <div
-            className="h-full bg-gradient-to-r from-emerald-500 via-violet-500 to-amber-500 rounded-full transition-all duration-700"
+            className="h-full bg-white rounded-full transition-all duration-700"
             style={{ width: `${progressPercent}%` }}
           />
         </div>
@@ -55,19 +53,19 @@ export default function Achievements() {
 
       {/* Achievements by Addiction */}
       {achievementsByAddiction.length === 0 ? (
-        <div className="bg-slate-800/30 backdrop-blur rounded-2xl p-8 border border-dashed border-slate-600/50 text-center animate-fade-in">
-          <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-slate-700/50 flex items-center justify-center">
-            <Trophy className="w-8 h-8 text-slate-400" />
+        <div className="bg-zinc-900 rounded-xl p-12 border border-zinc-800 text-center animate-fade-in">
+          <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-zinc-800 flex items-center justify-center">
+            <Trophy className="w-8 h-8 text-zinc-400" />
           </div>
-          <h3 className="text-lg font-medium text-slate-200 mb-2">
+          <h3 className="text-lg font-semibold text-white mb-2">
             Sin logros aún
           </h3>
-          <p className="text-slate-400 text-sm">
+          <p className="text-zinc-400 text-sm">
             Agrega un hábito y mantén tu racha para desbloquear logros.
           </p>
         </div>
       ) : (
-        <div className="space-y-6">
+        <div className="space-y-8">
           {achievementsByAddiction.map(({ addiction, achievements: addictionAchievements, possibleAchievements }, index) => (
             <div
               key={addiction.id}
@@ -76,19 +74,19 @@ export default function Achievements() {
             >
               {/* Addiction Header */}
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-slate-700 to-slate-800 flex items-center justify-center">
-                  <Icon name={addiction.icon} className="w-5 h-5 text-slate-300" />
+                <div className="w-10 h-10 rounded-lg bg-zinc-800 border border-zinc-700 flex items-center justify-center">
+                  <Icon name={addiction.icon} className="w-5 h-5 text-white" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-slate-100">{addiction.name}</h3>
-                  <p className="text-sm text-slate-400">
+                  <h3 className="font-semibold text-white">{addiction.name}</h3>
+                  <p className="text-sm text-zinc-400">
                     {addictionAchievements.length} / {possibleAchievements.length} desbloqueados
                   </p>
                 </div>
               </div>
 
               {/* Achievement Grid */}
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
                 {possibleAchievements.map((achievementDef) => {
                   const unlocked = addictionAchievements.find(
                     (a) => a.achievement_type === achievementDef.type
@@ -111,16 +109,16 @@ export default function Achievements() {
 
       {/* Legend */}
       {achievementsByAddiction.length > 0 && (
-        <div className="bg-slate-800/30 rounded-2xl p-4 border border-slate-700/50 animate-fade-in">
-          <h4 className="text-sm font-medium text-slate-300 mb-3">Leyenda</h4>
+        <div className="bg-zinc-900 rounded-xl p-4 border border-zinc-800 animate-fade-in">
+          <h4 className="text-sm font-medium text-zinc-300 mb-3">Leyenda</h4>
           <div className="grid grid-cols-2 gap-2 text-sm">
             <div className="flex items-center gap-2">
-              <div className="w-3 h-3 rounded-full bg-emerald-500" />
-              <span className="text-slate-400">Desbloqueado</span>
+              <div className="w-3 h-3 rounded-full bg-white" />
+              <span className="text-zinc-400">Desbloqueado</span>
             </div>
             <div className="flex items-center gap-2">
-              <div className="w-3 h-3 rounded-full bg-slate-600" />
-              <span className="text-slate-400">Bloqueado</span>
+              <div className="w-3 h-3 rounded-full bg-zinc-700 border border-zinc-600" />
+              <span className="text-zinc-400">Bloqueado</span>
             </div>
           </div>
         </div>

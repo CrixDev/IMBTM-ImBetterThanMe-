@@ -6,7 +6,7 @@ import AddAddictionModal from '@/components/AddAddictionModal'
 import RelapseModal from '@/components/RelapseModal'
 import AchievementToast from '@/components/AchievementToast'
 import type { Addiction } from '@/types'
-import { Plus, Target } from 'lucide-react'
+import { Plus, Target, Loader2 } from 'lucide-react'
 
 export default function Dashboard() {
   const { user } = useAuthStore()
@@ -26,72 +26,73 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="space-y-6 pb-4">
+    <div className="space-y-8 pb-8">
       {/* Welcome Section */}
       <div className="animate-fade-in">
-        <h1 className="text-2xl font-bold text-slate-100">
+        <h1 className="text-3xl font-bold text-white mb-3">
           Hola{user?.email ? `, ${user.email.split('@')[0]}` : ''}
         </h1>
-        <p className="text-slate-400 mt-1">Sigue adelante, cada día cuenta.</p>
+        <p className="text-zinc-400">Sigue adelante, cada día cuenta.</p>
       </div>
 
       {/* Stats Summary */}
       {addictions.length > 0 && (
-        <div className="grid grid-cols-2 gap-3 animate-fade-in delay-100">
-          <div className="bg-slate-800/50 backdrop-blur rounded-2xl p-4 border border-slate-700/50">
-            <div className="text-3xl font-bold text-emerald-400">
+        <div className="grid grid-cols-2 gap-6 animate-fade-in delay-100">
+          <div className="bg-zinc-900 rounded-xl p-6 border border-zinc-800">
+            <div className="text-4xl font-bold text-white mb-1">
               {addictions.length}
             </div>
-            <div className="text-sm text-slate-400 mt-1">
+            <div className="text-sm text-zinc-400">
               {addictions.length === 1 ? 'Hábito activo' : 'Hábitos activos'}
             </div>
           </div>
-          <div className="bg-slate-800/50 backdrop-blur rounded-2xl p-4 border border-slate-700/50">
-            <div className="text-3xl font-bold text-violet-400">
+          <div className="bg-zinc-900 rounded-xl p-6 border border-zinc-800">
+            <div className="text-4xl font-bold text-white mb-1">
               {addictions.reduce((acc, a) => acc + a.max_streak_days, 0)}
             </div>
-            <div className="text-sm text-slate-400 mt-1">Días acumulados</div>
+            <div className="text-sm text-zinc-400">Días acumulados</div>
           </div>
         </div>
       )}
 
       {/* Addictions List */}
-      <div className="space-y-4">
+      <div className="space-y-6">
         <div className="flex items-center justify-between">
-          <h2 className="text-lg font-semibold text-slate-200">Mis Hábitos</h2>
+          <h2 className="text-xl font-semibold text-white">Mis Hábitos</h2>
           <button
             onClick={() => setShowAddModal(true)}
-            className="p-2 bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-400 rounded-xl transition-colors"
+            className="p-2.5 bg-white hover:bg-zinc-200 text-black rounded-lg transition-colors"
+            title="Agregar hábito"
           >
             <Plus className="w-5 h-5" />
           </button>
         </div>
 
         {isLoading ? (
-          <div className="flex justify-center py-12">
-            <div className="w-8 h-8 border-2 border-emerald-500 border-t-transparent rounded-full animate-spin" />
+          <div className="flex justify-center py-16">
+            <Loader2 className="w-8 h-8 text-zinc-400 animate-spin" />
           </div>
         ) : addictions.length === 0 ? (
-          <div className="bg-slate-800/30 backdrop-blur rounded-2xl p-8 border border-dashed border-slate-600/50 text-center animate-fade-in">
-            <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-slate-700/50 flex items-center justify-center">
-              <Target className="w-8 h-8 text-slate-400" />
+          <div className="bg-zinc-900 rounded-xl p-12 border border-zinc-800 text-center animate-fade-in">
+            <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-zinc-800 flex items-center justify-center">
+              <Target className="w-8 h-8 text-zinc-400" />
             </div>
-            <h3 className="text-lg font-medium text-slate-200 mb-2">
+            <h3 className="text-lg font-semibold text-white mb-2">
               Comienza tu camino
             </h3>
-            <p className="text-slate-400 text-sm mb-4">
+            <p className="text-zinc-400 text-sm mb-6">
               Agrega tu primer hábito para empezar a rastrear tu progreso.
             </p>
             <button
               onClick={() => setShowAddModal(true)}
-              className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white font-medium rounded-xl shadow-lg shadow-emerald-500/30 transition-all"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-white hover:bg-zinc-200 text-black font-semibold rounded-lg transition-colors"
             >
               <Plus className="w-5 h-5" />
               Agregar hábito
             </button>
           </div>
         ) : (
-          <div className="space-y-3">
+          <div className="space-y-6">
             {addictions.map((addiction, index) => (
               <div
                 key={addiction.id}
@@ -132,7 +133,7 @@ export default function Dashboard() {
       {addictions.length > 0 && (
         <button
           onClick={() => setShowAddModal(true)}
-          className="fixed bottom-24 right-6 w-14 h-14 bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white rounded-full shadow-lg shadow-emerald-500/40 flex items-center justify-center transition-all hover:scale-110 z-40"
+          className="fixed bottom-28 md:bottom-32 right-6 md:right-12 w-16 h-16 bg-white hover:bg-zinc-200 text-black rounded-full shadow-lg flex items-center justify-center transition-all hover:scale-105 z-40"
           title="Agregar nuevo hábito"
         >
           <Plus className="w-6 h-6" />

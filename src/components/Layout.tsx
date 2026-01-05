@@ -1,25 +1,26 @@
 import { Outlet, NavLink } from 'react-router-dom'
 import { useAuthStore } from '@/stores/authStore'
-import { Sprout, Home, Sparkles, LogOut } from 'lucide-react'
+import { Home, Sparkles, LogOut } from 'lucide-react'
+import { Logo } from '@/components/Logo'
 
 export default function Layout() {
   const { signOut } = useAuthStore()
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-black">
       {/* Header */}
-      <header className="sticky top-0 z-50 bg-slate-900/80 backdrop-blur-xl border-b border-slate-700/50">
-        <div className="max-w-lg mx-auto px-4 h-16 flex items-center justify-between">
+      <header className="sticky top-0 z-50 bg-black/95 backdrop-blur-sm border-b border-zinc-800">
+        <div className="max-w-2xl mx-auto px-6 md:px-12 h-16 md:h-20 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-500 to-emerald-600 flex items-center justify-center shadow-lg shadow-emerald-500/20">
-              <Sprout className="w-5 h-5 text-white" />
+            <div className="w-9 h-9 rounded-lg bg-white p-1.5 flex items-center justify-center">
+              <Logo variant="isotipo" className="w-full h-full" />
             </div>
-            <span className="font-bold text-slate-100">IMBTM</span>
+            <span className="font-bold text-white">IMBTM</span>
           </div>
           
           <button
             onClick={signOut}
-            className="p-2 text-slate-400 hover:text-slate-200 transition-colors"
+            className="p-2 text-zinc-400 hover:text-white hover:bg-zinc-900 rounded-lg transition-colors"
             title="Cerrar sesión"
           >
             <LogOut className="w-5 h-5" />
@@ -28,39 +29,39 @@ export default function Layout() {
       </header>
 
       {/* Main Content */}
-      <main className="flex-1 max-w-lg mx-auto w-full px-4 py-6">
+      <main className="flex-1 max-w-2xl mx-auto w-full px-6 md:px-12 py-8 md:py-10">
         <Outlet />
       </main>
 
       {/* Bottom Navigation */}
-      <nav className="sticky bottom-0 bg-slate-900/95 backdrop-blur-xl border-t border-slate-700/50 safe-area-inset-bottom">
-        <div className="max-w-lg mx-auto px-4 h-16 flex items-center justify-around">
+      <nav className="sticky bottom-0 bg-black/95 backdrop-blur-sm border-t border-zinc-800">
+        <div className="max-w-2xl mx-auto px-6 md:px-12 h-20 md:h-24 flex items-center justify-center gap-6">
           <NavLink
             to="/"
             end
             className={({ isActive }) =>
-              `flex flex-col items-center gap-1 px-6 py-2 rounded-xl transition-all ${
+              `flex flex-col items-center gap-1 px-8 py-2 rounded-lg transition-colors ${
                 isActive
-                  ? 'text-emerald-400 bg-emerald-500/10'
-                  : 'text-slate-400 hover:text-slate-200'
+                  ? 'text-white bg-zinc-900'
+                  : 'text-zinc-400 hover:text-white hover:bg-zinc-900'
               }`
             }
           >
-            <Home className="w-6 h-6" />
+            <Home className="w-5 h-5" />
             <span className="text-xs font-medium">Inicio</span>
           </NavLink>
 
           <NavLink
             to="/achievements"
             className={({ isActive }) =>
-              `flex flex-col items-center gap-1 px-6 py-2 rounded-xl transition-all ${
+              `flex flex-col items-center gap-1 px-8 py-2 rounded-lg transition-colors ${
                 isActive
-                  ? 'text-emerald-400 bg-emerald-500/10'
-                  : 'text-slate-400 hover:text-slate-200'
+                  ? 'text-white bg-zinc-900'
+                  : 'text-zinc-400 hover:text-white hover:bg-zinc-900'
               }`
             }
           >
-            <Sparkles className="w-6 h-6" />
+            <Sparkles className="w-5 h-5" />
             <span className="text-xs font-medium">Logros</span>
           </NavLink>
         </div>

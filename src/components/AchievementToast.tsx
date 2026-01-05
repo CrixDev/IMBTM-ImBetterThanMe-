@@ -20,51 +20,35 @@ export default function AchievementToast({ achievement, onClose }: AchievementTo
   if (!definition) return null
 
   return (
-    <div className="fixed top-4 left-4 right-4 z-50 flex justify-center pointer-events-none">
+    <div className="fixed top-6 left-6 right-6 md:top-12 md:left-12 md:right-12 z-50 flex justify-center pointer-events-none">
       <div
-        className={`bg-gradient-to-r ${definition.color} rounded-2xl p-4 shadow-2xl pointer-events-auto animate-fade-in max-w-sm w-full`}
+        className="bg-white text-black rounded-xl p-6 shadow-lg pointer-events-auto animate-scale-in max-w-sm w-full border border-zinc-800"
         onClick={onClose}
       >
         <div className="flex items-center gap-4">
           {/* Icon */}
-          <div className="w-14 h-14 rounded-xl bg-white/20 backdrop-blur flex items-center justify-center animate-badge-unlock">
-            <Icon name={definition.icon} className="text-white" size={28} />
+          <div className="w-14 h-14 rounded-lg bg-black/10 flex items-center justify-center flex-shrink-0">
+            <Icon name={definition.icon} className="text-black" size={28} />
           </div>
 
           {/* Content */}
-          <div className="flex-1">
-            <p className="text-xs font-medium text-white/80 uppercase tracking-wider">
+          <div className="flex-1 min-w-0">
+            <p className="text-xs font-medium text-black/60 uppercase tracking-wider">
               ¡Logro Desbloqueado!
             </p>
-            <h3 className="text-lg font-bold text-white mt-0.5">
+            <h3 className="text-lg font-bold text-black mt-0.5">
               {definition.name}
             </h3>
-            <p className="text-sm text-white/80">{definition.description}</p>
+            <p className="text-sm text-black/70">{definition.description}</p>
           </div>
 
           {/* Close */}
           <button
             onClick={onClose}
-            className="p-1 text-white/60 hover:text-white transition-colors"
+            className="p-1 text-black/60 hover:text-black transition-colors flex-shrink-0"
           >
             <X className="w-5 h-5" />
           </button>
-        </div>
-
-        {/* Confetti effect */}
-        <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-2xl">
-          {[...Array(20)].map((_, i) => (
-            <div
-              key={i}
-              className="absolute w-2 h-2 bg-white/30 rounded-full"
-              style={{
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
-                animation: `pulse-glow ${0.5 + Math.random()}s ease-out infinite`,
-                animationDelay: `${Math.random() * 0.5}s`
-              }}
-            />
-          ))}
         </div>
       </div>
     </div>

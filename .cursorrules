@@ -1,0 +1,89 @@
+# IMBTM Design System Rules
+
+## Spacing & Layout
+- NUNCA usar componentes pegados a los bordes del viewport
+- Contenido máximo: max-w-2xl (672px) centrado con mx-auto
+- Padding interno: p-6 (24px) mínimo en móvil, p-8 en desktop
+- Gap entre secciones: gap-8 o space-y-8 (32px)
+- Margin entre cards: space-y-4 (16px)
+- Elementos flotantes: mínimo 24px de los bordes
+
+## Colors (Black & White Only)
+- Background principal: bg-black
+- Superficies/Cards: bg-zinc-900 con border border-zinc-800
+- Hover en cards: bg-zinc-800
+- Text primario: text-white
+- Text secundario: text-zinc-400
+- Botones primarios: bg-white text-black hover:bg-zinc-200
+- Botones secundarios: bg-zinc-800 text-white hover:bg-zinc-700
+- Critical actions (recaídas): bg-red-950 border-red-900 text-red-400
+- Success/Progress: usar blanco o zinc-300
+- NO usar gradientes de colores (emerald, violet, amber, etc.)
+- NO usar colores vibrantes excepto rojo para críticos
+
+## Typography
+- Headers principales: font-bold text-2xl md:text-3xl text-white
+- Headers secundarios: font-semibold text-lg md:text-xl text-white
+- Body text: text-base text-white
+- Secondary text: text-sm text-zinc-400
+- Labels: text-sm font-medium text-zinc-300
+- Font weights permitidos: 400 (normal), 500 (medium), 600 (semibold), 700 (bold)
+
+## Components
+- Bordes: border-zinc-800 (sutiles y elegantes)
+- Border radius: rounded-xl (12px) para cards, rounded-lg para inputs
+- Hover states: Solo bg-zinc-800 o bg-zinc-200 (según el fondo)
+- Focus rings: ring-2 ring-white ring-offset-2 ring-offset-black
+- Shadows: Mínimas, solo shadow-lg para modales
+- Backdrop: bg-black/80 para modales
+- Separadores: divide-zinc-800
+
+## Buttons
+- Primary: bg-white text-black hover:bg-zinc-200 font-medium px-4 py-2
+- Secondary: bg-zinc-800 text-white hover:bg-zinc-700 font-medium px-4 py-2
+- Ghost: text-white hover:bg-zinc-800
+- Destructive: bg-red-950 border border-red-900 text-red-400 hover:bg-red-900
+
+## Cards
+- Fondo: bg-zinc-900
+- Borde: border border-zinc-800
+- Padding: p-6
+- Hover: hover:bg-zinc-800 transition-colors
+- NO usar backdrop-blur
+- NO usar gradientes
+
+## Inputs
+- Fondo: bg-zinc-900
+- Borde: border-zinc-800
+- Focus: focus:border-white focus:ring-1 focus:ring-white
+- Text: text-white
+- Placeholder: placeholder-zinc-500
+
+## Icons
+- Activos: text-white
+- Inactivos: text-zinc-500
+- Stroke width: 2 (consistente)
+- Size: w-5 h-5 para UI normal, w-6 h-6 para destacados
+
+## Progress Bars
+- Track: bg-zinc-800
+- Fill: bg-white
+- Height: h-1.5 o h-2
+- Radius: rounded-full
+
+## Animations
+- Transitions: transition-colors duration-200
+- Hover: hover:scale-105 solo en elementos interactivos pequeños
+- NO usar animaciones excesivas
+
+## Mobile First
+- Siempre mobile-first (min-width breakpoints)
+- Touch targets: mínimo 44x44px
+- Espaciado táctil entre elementos interactivos
+
+## Accessibility
+- Alto contraste (WCAG AAA)
+- Focus visible siempre
+- Labels descriptivos
+- ARIA attributes cuando sea necesario
+

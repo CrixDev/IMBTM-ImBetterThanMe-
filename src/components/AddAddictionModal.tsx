@@ -3,7 +3,7 @@ import { useAuthStore } from '@/stores/authStore'
 import { useAddictionStore } from '@/stores/addictionStore'
 import { ADDICTION_ICONS } from '@/types'
 import { Icon } from '@/components/icons'
-import { X, Plus } from 'lucide-react'
+import { X, Plus, Loader2 } from 'lucide-react'
 
 interface AddAddictionModalProps {
   onClose: () => void
@@ -37,36 +37,31 @@ export default function AddAddictionModal({ onClose }: AddAddictionModalProps) {
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-6 md:p-12">
       {/* Backdrop */}
       <div
-        className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+        className="absolute inset-0 bg-black/80"
         onClick={onClose}
       />
 
       {/* Modal */}
-      <div className="relative w-full max-w-lg bg-slate-800 rounded-t-3xl sm:rounded-3xl border border-slate-700/50 shadow-2xl animate-fade-in max-h-[90vh] overflow-y-auto">
-        {/* Handle */}
-        <div className="flex justify-center pt-3 sm:hidden">
-          <div className="w-10 h-1 bg-slate-600 rounded-full" />
-        </div>
-
-        <div className="p-6">
+      <div className="relative w-full max-w-lg bg-zinc-900 rounded-xl border border-zinc-800 shadow-lg animate-scale-in max-h-[90vh] overflow-y-auto m-6">
+        <div className="p-6 md:p-10">
           {/* Header */}
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-xl font-semibold text-slate-100">Nuevo Hábito</h2>
+            <h2 className="text-xl font-semibold text-white">Nuevo Hábito</h2>
             <button
               onClick={onClose}
-              className="p-2 text-slate-400 hover:text-slate-200 transition-colors"
+              className="p-2 text-zinc-400 hover:text-white hover:bg-zinc-800 rounded-lg transition-colors"
             >
               <X className="w-5 h-5" />
             </button>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-8">
             {/* Icon Selection */}
             <div>
-              <label className="block text-sm font-medium text-slate-300 mb-3">
+              <label className="block text-sm font-medium text-zinc-300 mb-3">
                 Icono
               </label>
               <div className="grid grid-cols-6 gap-2">
@@ -75,14 +70,14 @@ export default function AddAddictionModal({ onClose }: AddAddictionModalProps) {
                     key={item.icon}
                     type="button"
                     onClick={() => setIcon(item.icon)}
-                    className={`p-3 rounded-xl transition-all flex items-center justify-center ${
+                    className={`p-3 rounded-lg transition-all flex items-center justify-center ${
                       icon === item.icon
-                        ? 'bg-emerald-500/20 ring-2 ring-emerald-500'
-                        : 'bg-slate-700/50 hover:bg-slate-700'
+                        ? 'bg-white text-black'
+                        : 'bg-zinc-800 hover:bg-zinc-700 border border-zinc-700'
                     }`}
                     title={item.label}
                   >
-                    <Icon name={item.icon} className="w-6 h-6 text-slate-300" />
+                    <Icon name={item.icon} className="w-6 h-6" />
                   </button>
                 ))}
               </div>
@@ -90,7 +85,7 @@ export default function AddAddictionModal({ onClose }: AddAddictionModalProps) {
 
             {/* Name Input */}
             <div>
-              <label htmlFor="name" className="block text-sm font-medium text-slate-300 mb-2">
+              <label htmlFor="name" className="block text-sm font-medium text-zinc-300 mb-2">
                 Nombre del hábito
               </label>
               <input
@@ -98,7 +93,7 @@ export default function AddAddictionModal({ onClose }: AddAddictionModalProps) {
                 id="name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="w-full px-4 py-3 bg-slate-900/50 border border-slate-600/50 rounded-xl text-slate-100 placeholder-slate-500 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-colors"
+                className="w-full px-4 py-3 bg-black border border-zinc-800 rounded-lg text-white placeholder-zinc-500 focus:outline-none focus:border-white focus:ring-1 focus:ring-white transition-colors"
                 placeholder="Ej: Dejar de fumar"
                 autoFocus
               />
@@ -108,11 +103,11 @@ export default function AddAddictionModal({ onClose }: AddAddictionModalProps) {
             <button
               type="submit"
               disabled={!name.trim() || isSubmitting}
-              className="w-full py-3 px-4 bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white font-semibold rounded-xl shadow-lg shadow-emerald-500/30 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              className="w-full py-3 px-4 bg-white hover:bg-zinc-200 text-black font-semibold rounded-lg transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
             >
               {isSubmitting ? (
                 <>
-                  <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                  <Loader2 className="w-5 h-5 animate-spin" />
                   Guardando...
                 </>
               ) : (
