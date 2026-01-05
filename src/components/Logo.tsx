@@ -1,5 +1,5 @@
-import IsotipoIMBTM from '@/assets/Isotipo_IMBTM.svg'
-import LogoIMBTM from '@/assets/Logo_IMBTM.svg'
+import IsotipoIMBTM from '@/assets/Isotipo_IMBTM.svg?url'
+import LogoIMBTM from '@/assets/Logo_IMBTM.svg?url'
 
 interface LogoProps {
   className?: string
